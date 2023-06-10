@@ -5,12 +5,15 @@ runs:
   steps:
     - uses: actions/checkout@v2
     - name: install g++12
+      shell: bash
       run: |
-        apt update
-        apt install -y g++-12
-        rm -f /usr/bin/g++ && ln -s /usr/bin/g++-12 /usr/bin/g++
+        sudo apt update
+        sudo apt install -y g++-12
+        sudo rm -f /usr/bin/g++
+        sudo ln -s /usr/bin/g++-12 /usr/bin/g++
     - name: install bazel ${{ env.USE_BAZEL_VERSION }}
       if: ${{ env.ACT }}
+      shell: bash
       run: npm install -g @bazel/bazelisk
     - uses: bazelbuild/setup-bazelisk@v1
       if: ${{ !env.ACT }}
