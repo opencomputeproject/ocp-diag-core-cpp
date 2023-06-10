@@ -1,0 +1,22 @@
+name: bazel-container
+description: setup minimal container for bazel build env
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v2
+    - name: install g++12
+      run: |
+        apt update
+        apt install -y g++-12
+        rm -f /usr/bin/g++ && ln -s /usr/bin/g++-12 /usr/bin/g++
+    - name: install bazel ${{ env.USE_BAZEL_VERSION }}
+      if: ${{ env.ACT }}
+      run: npm install -g @bazel/bazelisk
+    - uses: bazelbuild/setup-bazelisk@v1
+      if: ${{ !env.ACT }}
+    - name: setup bazel cache
+      if: ${{ !env.ACT }}
+      uses: actions/cache@v2
+      with:
+        path: "~/.cache/bazel"
+        key: bazel
