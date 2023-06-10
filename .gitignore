@@ -1,0 +1,4 @@
+bazel-bin
+bazel-ocp-diag-core-cpp
+bazel-out
+bazel-testlogs
