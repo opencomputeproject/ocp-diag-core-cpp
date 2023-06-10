@@ -1,0 +1,29 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  api-unittests:
+    runs-on: ubuntu-20.04
+    env:
+      # bazel 5.0.0 fails with: 'apple_common' value has no field or method 'objc_proto_aspect'
+      USE_BAZEL_VERSION: 4.2.1
+    steps:
+      - uses: actions/checkout@v2
+      - name: install bazel ${{ env.USE_BAZEL_VERSION }}
+        if: ${{ env.ACT }}
+        run: npm install -g @bazel/bazelisk
+      - uses: bazelbuild/setup-bazelisk@v1
+        if: ${{ !env.ACT }}
+      - name: setup bazel cache
+        if: ${{ !env.ACT }}
+        uses: actions/cache@v2
+        with:
+          path: "~/.cache/bazel"
+          key: bazel
+      - name: unittests
+        run: ./ci_scripts/run_bazel_tests.sh
