@@ -1,0 +1,42 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  api-unittests:
+    runs-on: ubuntu-22.04
+    env:
+      # bazel 5.0.0 fails with: 'apple_common' value has no field or method 'objc_proto_aspect'
+      USE_BAZEL_VERSION: 4.2.1
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/bazel-container
+      - name: unittests
+        run: |
+          bazel build //...
+          bazel test //... --test_output=errors
+
+  schema-validation:
+    runs-on: ubuntu-22.04
+    env:
+      # bazel 5.0.0 fails with: 'apple_common' value has no field or method 'objc_proto_aspect'
+      USE_BAZEL_VERSION: 4.2.1
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/bazel-container
+      - uses: actions/setup-go@v2
+        with:
+          go-version: "1.17.6"
+      # actions/checkout@v3 requires authentication even for fully public repos
+      # so pull the ocp-diag-core validator manually
+      - name: pull validator
+        run: git clone https://github.com/opencomputeproject/ocp-diag-core.git --depth=1
+      - name: run validator against examples
+        run: |
+          OUTPUT="$(bazel run //ocpdiag/core/examples/full_spec)"
+          cd ocp-diag-core/validators/spec_validator
+          echo "$OUTPUT" | go run . -schema ../../json_spec/output/root.json -
