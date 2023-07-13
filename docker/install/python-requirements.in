@@ -1,0 +1,6 @@
+virtualenv
+wheel
+requests
+mock
+PyHamcrest
+paramiko
