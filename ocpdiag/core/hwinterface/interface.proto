@@ -1,0 +1,152 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface.interface;
+
+import "ocpdiag/core/hwinterface/identifier.proto";
+
+enum InfoType {
+  DEFAULT = 0;
+  IDENTIFIER = 1;
+  ENABLED =
+      2;  //
+  CONFIGURATION = 3;
+  LOCATION = 4;
+  SIGNATURE = 5;
+  METRIC = 6;
+}
+
+message PcieInfo {
+  Identifier id = 1;
+  Identifier remote_id = 2;
+  reserved 3;
+  reserved 4;
+  message Location {
+    int32 domain = 1;
+    int32 bus = 2;       // 8 bits
+    int32 device = 3;    // 5 bits
+    int32 function = 4;  // 3 bits
+  }
+  Location local_link = 5;
+  message Signature {
+    int32 vendor_id = 1;  // 16 bits
+    int32 device_id = 2;  // 16 bits
+  }
+  Signature signature = 6;
+  message PcieMetric {
+    bool enabled = 1;
+    int32 lanes_in_use = 2;
+    enum Type {
+      PCIETYPE_UNKNOWN = 0;
+      PCIETYPE_GEN1 = 1;
+      PCIETYPE_GEN2 = 2;
+      PCIETYPE_GEN3 = 3;
+      PCIETYPE_GEN4 = 4;
+      PCIETYPE_GEN5 = 5;
+      PCIETYPE_GEN6 = 6;
+    }
+    Type pcie_type = 3;
+    int32 speed = 4;
+  }
+  PcieMetric expected_metric = 7;
+  PcieMetric actual_metric = 8;
+}
+
+message UsbInfo {
+  Identifier local_id = 1;
+  repeated Identifier remote_id = 2;
+  reserved 3;
+  message Configuration {
+    int32 vendor_id = 2;
+    int32 product_id = 3;
+  }
+  Configuration configuration = 4;
+  message Location {
+    int32 bus = 1;
+    int32 device = 2;
+    repeated int32 port = 3;
+  }
+  Location local_link = 5;
+  Location remote_link = 6;
+  message UsbMetric {
+    bool enabled = 1;
+    int32 speed = 2;  // In Mbps.
+  }
+  UsbMetric expected_metric = 7;
+  UsbMetric actual_metric = 8;
+}
+
+message NcsiInfo {
+  Identifier local_id = 1;
+  Identifier remote_id = 2;
+  bool enabled = 3;
+  message Configuration {
+    bool loopback = 2;
+    double tx_bandwith = 3;
+    double rx_bandwith = 4;
+    double tx_package_drop_rate = 5;
+    double rx_package_drop_rate = 6;
+  }
+  Configuration configuration = 4;
+  message Location {
+    int32 port = 1;
+  }
+  Location local_link = 5;
+  Location remote_link = 6;
+}
+
+message UpiInfo {
+  Identifier local_id = 1;
+  repeated Identifier remote_id = 2;
+  reserved 3;
+  message Location {
+    int32 domain = 1;
+    int32 bus = 2;       // 8 bits
+    int32 device = 3;    // 5 bits
+    int32 function = 4;  // 3 bits
+  }
+  Location local_link = 5;
+  Location remote_link = 6;
+  message UpiMetric {
+    bool enabled = 1;
+    int32 speed = 2;  // in MT/s
+  }
+  UpiMetric expected_metric = 7;
+  UpiMetric actual_metric = 8;
+}
+
+message I2cInfo {
+  Identifier id = 1;
+  message Location {
+    int32 bus = 1;  // virtual bus managed by OS
+    int32 address = 2;
+  }
+  Location location = 2;
+}
+
+message ScsiInfo {
+  Identifier local_id = 1;
+  Identifier remote_id = 2;
+  message ScsiMetric {
+    bool enabled = 1;
+    int32 speed = 2;
+  }
+  ScsiMetric expected_metric = 3;
+  ScsiMetric actual_metric = 4;
+}
+
+message NvLinkInfo {
+  Identifier local_id = 1;
+  Identifier remote_id = 2;
+  message NvLinkMetric {
+    bool enabled = 1;
+    int32 speed = 2;  // in MT/s
+  }
+  NvLinkMetric expected_metric = 3;
+  NvLinkMetric actual_metric = 4;
+}

@@ -1,0 +1,135 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface.storage;
+
+import "ocpdiag/core/hwinterface/identifier.proto";
+
+enum InfoType {
+  DEFAULT = 0;
+  IDENTIFIER = 1;
+  SYSTEM_INFO = 2;
+  DEVICE_TYPE = 3;
+  SECURITY_INFO = 4;
+  ATA_INFO = 5;
+  DEVICE_STATUS = 6;
+}
+
+enum DeviceType {
+  DEVICETYPE_UNKNOWN = 0;
+  DEVICETYPE_HDD = 1;
+  DEVICETYPE_SSD = 2;
+  DEVICETYPE_GOOGLE_SSD = 3;
+  DEVICETYPE_NVME_SSD = 4;
+  DEVICETYPE_NVDIMM = 5;
+  DEVICETYPE_AEP = 6;
+  DEVICETYPE_LNVD = 7;
+  DEVICETYPE_EMMC = 8;
+}
+
+message SystemInfo {
+  string kernel_name = 1;
+  string persistent_name = 2;
+  // Path under /sys/devices.
+  string device_link = 3;
+  // Full path of the device node.
+  optional string dev_node_path = 4;
+  // The block devices associated with this physical storage device
+  // This would be the device names found in /sys/block
+  // Example: For the physical storage device /dev/nvme0
+  // the block devices would be /sys/block/nvme0n1, /sys/block/nvme0n2, ...
+  repeated string block_dev_names = 5;
+  //
+  optional string universal_name = 6;
+}
+
+enum SecurityLevel {
+  SECURITYLEVEL_UNKNOWN = 0;
+  SECURITYLEVEL_SEC0 = 1;  // POWER DOWN, SECURITY DISABLED
+  SECURITYLEVEL_SEC1 = 2;  // UNSECURED
+  SECURITYLEVEL_SEC2 = 3;  // FROZEN,UNSECURED
+  SECURITYLEVEL_SEC3 = 4;  // POWER DOWN, SECURITY ENABLED
+  SECURITYLEVEL_SEC4 = 5;  // LOCKED
+  SECURITYLEVEL_SEC5 = 6;  // UNLOCKED
+  SECURITYLEVEL_SEC6 = 7;  // FROZEN, UNLOCKED
+}
+
+enum SecurityMode {
+  SECURITYMODE_UNKNOWN = 0;
+  SECURITYMODE_ATA = 1;
+  SECURITYMODE_TCG = 2;
+  SECURITYMODE_UNSUPPORTED = 3;
+}
+
+message SecurityInfo {
+  SecurityLevel level = 1;
+  SecurityMode mode = 2;
+}
+
+enum Capability {
+  CAP_UNKNOWN = 0;
+  CAP_SMART = 1;             // SMART commands
+  CAP_GPL = 2;               // General purpose log access commands
+  CAP_SATA_PHY = 3;          // SATA PHY error counters
+  CAP_DMA_LOG_EXT = 4;       // READ DMA LOG EXT command
+  CAP_DSN = 5;               // DSN feature set
+  CAP_SCT = 6;               // SMART Command Transport
+  CAP_SCT_LONG = 7;          // SCT READ LONG command
+  CAP_SCT_SAME = 8;          // SCT WRITE SAME pattern command
+  CAP_SCT_ERC = 9;           // SCT Error Recovery Control
+  CAP_SCT_FEAT = 10;         // SCT Feature Control
+  CAP_SCT_TAB = 11;          // SCT Data Table command
+  CAP_WWN = 12;              // World wide name supported
+  CAP_PM = 13;               // Power Management feature set
+  CAP_WRITE_UNC = 14;        // WRITE UNCORRECTABLE command
+  CAP_HPA = 15;              // Host protected area
+  CAP_AAM = 16;              // Automatic acoustic management
+  CAP_48BIT = 17;            // 48 bit LBA support
+  CAP_FLUSH = 18;            // FLUSH command
+  CAP_FLUSH_EXT = 19;        // FLUSH EXT command
+  CAP_WRITE_CACHE = 20;      // Volatile write caching
+  CAP_READ_LOOK_AHEAD = 21;  // Read look-ahead operation
+  CAP_SECURITY = 22;         // Security feature set
+  CAP_SSP = 23;              // Software settings preservation
+  CAP_FDE_UNOFFICIAL = 24;   // Full disk encryption according to draft
+                             // specification.
+  CAP_FDE = 25;  // Full disk encryption according to ASC-3 specification.
+  CAP_NCQ = 26;  // Native Command Queuing
+  CAP_NCQ_UNLOAD = 27;            // Unload device w/ NCQ commands outstanding
+  CAP_NCQ_PRIO = 28;              // NCQ Priority
+  CAP_NCQ_STREAMING = 29;         // NCQ streaming commands
+  CAP_NCQ_QUEUE_MANAGEMENT = 30;  // NCQ abort/deadline queue management
+  CAP_NCQ_NON_DATA = 31;          // SEND/RECEIVE FPDMA QUEUED
+  CAP_NCQ_AUTO_SENSE = 32;        // Supports generating SPC-4 sense codes
+  CAP_TCG = 33;                   // Trusted computing group command support
+}
+
+message AtaInfo {
+  uint64 num_sectors = 1;
+  int32 logical_sector_size = 2;
+  int32 physical_sector_size = 3;
+  int32 rpm = 4;
+  repeated Capability enabled_capabilities = 5;
+  repeated Capability supported_capabilities = 6;
+}
+
+enum DeviceStatus {
+  DEVICESTATUS_UNKNOWN = 0;
+  DEVICESTATUS_ENABLED = 1;
+  DEVICESTATUS_DISABLED = 2;
+  DEVICESTATUS_ABSENT = 3;
+}
+
+message Info {
+  Identifier id = 1;
+  SystemInfo system_info = 2;
+  DeviceType device_type = 3;
+  SecurityInfo security_info = 4;
+  optional AtaInfo ata_info = 5;
+  DeviceStatus device_status = 6;
+}

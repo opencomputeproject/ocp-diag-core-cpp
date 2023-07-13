@@ -1,0 +1,204 @@
+# proto-file: platforms/networking/model/query/public/query_service.proto
+# proto-message: TableQueryResponse
+
+# This file aims to mimic the global devpath mapping query response from UHM,
+# until UHM is ready to provide the service
+
+################################################################################
+# node_local_barepath:
+################################################################################
+header_row { cells: "node_local_identifier" cells: "node" cells: "target" }
+data_rows {
+  entity_cells {
+    entities {
+      id {
+        kind: EK_NODE_LOCAL_IDENTIFIER
+        name: "something-nic-offload-node-motherboard"
+      }
+      [net_model_unm.proto.node_local_identifier_attr] {
+        node_local_barepath: "/phys"
+      }
+    }
+  }
+  entity_cells {
+    entities {
+      id { kind: EK_MACHINE_OFFLOAD_NODE name: "something-nic-offload-node" }
+      machine_offload_node_attr { node_info { entity_tag: "nic-offload-node" } }
+    }
+  }
+  entity_cells {
+    entities {
+      id { kind: EK_PLUGIN_CARD name: "something" }
+      plugin_card_attr: {
+        physical_item_attr {
+          is_repairable_unit: true
+          lru_name: "something"
+          plugin_id: "something"
+        }
+        location_id {
+          barepath: "/phys/PE0/IO0"
+        }
+      }
+    }
+  }
+}
+data_rows {
+  entity_cells {
+    entities {
+      id {
+        kind: EK_NODE_LOCAL_IDENTIFIER
+        name: "something-nic-offload-node-cpu"
+      }
+      [net_model_unm.proto.node_local_identifier_attr] {
+        node_local_barepath: "/phys/CPU1"
+      }
+    }
+  }
+  entity_cells {
+    entities {
+      id { kind: EK_MACHINE_OFFLOAD_NODE name: "something-nic-offload-node" }
+      machine_offload_node_attr { node_info { entity_tag: "nic-offload-node" } }
+    }
+  }
+  entity_cells {
+    entities {
+      id { kind: EK_CHIP_PACKAGE name: "something-cpu1" }
+      chip_package_attr: {
+        physical_item_attr {
+          is_repairable_unit: false
+        }
+        location_id {
+          barepath: "/phys/PE0/IO0/CPU1"
+        }
+      }
+    }
+  }
+}
+data_rows {
+  entity_cells {
+    entities {
+      id {
+        kind: EK_NODE_LOCAL_IDENTIFIER
+        name: "something-nic-control-node-cpu"
+      }
+      [net_model_unm.proto.node_local_identifier_attr] {
+        node_local_barepath: "/phys/CPU0"
+      }
+    }
+  }
+  entity_cells {
+    entities {
+      id { kind: EK_MACHINE_CONTROL_NODE name: "something-nic-control-node" }
+      machine_control_node_attr { node_info { entity_tag: "nic-control-node" } }
+    }
+  }
+  entity_cells {
+    entities {
+      id { kind: EK_CHIP_PACKAGE name: "something-cpu0" }
+      chip_package_attr: {
+        physical_item_attr {
+          is_repairable_unit: false
+        }
+        location_id {
+          barepath: "/phys/PE0/IO0/CPU0"
+        }
+      }
+    }
+  }
+}
+data_rows {
+  entity_cells {
+    entities {
+      id {
+        kind: EK_NODE_LOCAL_IDENTIFIER
+        name: "something-nic-control-node-dimm"
+      }
+      [net_model_unm.proto.node_local_identifier_attr] {
+        node_local_barepath: "/phys/DIMM0"
+      }
+    }
+  }
+  entity_cells {
+    entities {
+      id { kind: EK_MACHINE_CONTROL_NODE name: "something-nic-control-node" }
+      machine_control_node_attr { node_info { entity_tag: "nic-control-node" } }
+    }
+  }
+  entity_cells {
+    entities {
+      id { kind: EK_DIMM name: "something-dimm0" }
+      dimm_attr: {
+        physical_item_attr {
+          is_repairable_unit: false
+        }
+        location_id {
+          barepath: "/phys/PE0/IO0/DIMM0"
+        }
+      }
+    }
+  }
+}
+data_rows {
+  entity_cells {
+    entities {
+      id {
+        kind: EK_NODE_LOCAL_IDENTIFIER
+        name: "something-nic-control-node-dimm"
+      }
+      [net_model_unm.proto.node_local_identifier_attr] {
+        node_local_barepath: "/phys/DIMM1"
+      }
+    }
+  }
+  entity_cells {
+    entities {
+      id { kind: EK_MACHINE_CONTROL_NODE name: "something-nic-control-node" }
+      machine_control_node_attr { node_info { entity_tag: "nic-control-node" } }
+    }
+  }
+  entity_cells {
+    entities {
+      id { kind: EK_DIMM name: "something-dimm1" }
+      dimm_attr: {
+        physical_item_attr {
+          is_repairable_unit: false
+        }
+        location_id {
+          barepath: "/phys/PE0/IO0/DIMM1"
+        }
+      }
+    }
+  }
+}
+data_rows {
+  entity_cells {
+    entities {
+      id {
+        kind: EK_NODE_LOCAL_IDENTIFIER
+        name: "something-nic-control-node-dimm"
+      }
+      [net_model_unm.proto.node_local_identifier_attr] {
+        node_local_barepath: "/phys/DIMM2"
+      }
+    }
+  }
+  entity_cells {
+    entities {
+      id { kind: EK_MACHINE_CONTROL_NODE name: "something-nic-control-node" }
+      machine_control_node_attr { node_info { entity_tag: "nic-control-node" } }
+    }
+  }
+  entity_cells {
+    entities {
+      id { kind: EK_DIMM name: "something-dimm2" }
+      dimm_attr: {
+        physical_item_attr {
+          is_repairable_unit: false
+        }
+        location_id {
+          barepath: "/phys/PE0/IO0/DIMM2"
+        }
+      }
+    }
+  }
+}

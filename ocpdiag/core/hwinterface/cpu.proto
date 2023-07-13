@@ -1,0 +1,93 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface.cpu;
+
+import "ocpdiag/core/hwinterface/identifier.proto";
+
+enum InfoType {
+  DEFAULT = 0;
+  TOPOLOGY = 1;
+  // CPU vendor, family, model and stepping
+  SIGNATURE = 2;
+  LPU_INFO = 3;
+  FREQUENCY = 4;
+  THROTTLE_INFO = 5;
+  LPU_IDENTIFIER = 6;
+  SOCKET_IDENTIFIER = 7;
+  PACKAGE_IDENTIFIER = 9;
+  // Internal.
+  GOOGLE_IDENTIFIER = 8;
+}
+
+message Topology {
+  int32 sockets_enabled = 1;
+  int32 logical_cores_enabled = 2;
+  int32 physical_cores_enabled = 3;
+  int32 logical_cores_max_per_socket = 4;
+}
+
+enum Vendor {
+  VENDOR_UNKNOWN = 0;
+  VENDOR_INTEL = 1;
+  VENDOR_AMD = 2;
+  VENDOR_CYRIX = 3;
+  VENDOR_CENTAUR = 4;
+  VENDOR_NEXTGEN = 5;
+  VENDOR_TM_X86 = 6;
+  VENDOR_RISE = 7;
+  VENDOR_UMC = 8;
+  VENDOR_IBM = 9;
+  VENDOR_APM = 10;
+  VENDOR_QUALCOMM = 11;
+  reserved 12;
+  VENDOR_ARM = 13;
+  VENDOR_AMPERE = 14;
+}
+
+message Signature {
+  reserved 1;
+  int32 family = 2;
+  int32 model = 3;
+  int32 stepping = 4;
+  Vendor vendor = 5;
+}
+
+message LpuInfo {
+  // Topology.
+  int32 socket_id = 1;
+  int32 die_id = 2;
+  int32 core_id = 3;
+  int32 thread_id = 4;
+  int32 numa_node_id = 5;
+  // microcode revision.
+  uint64 microcode_revision = 9;
+}
+
+message LpuFrequency {
+  double design_freq = 1;
+  double cur_freq = 2;
+  double max_freq = 3;
+}
+
+message Info {
+  Topology topology = 1;
+  Signature signature = 2;
+  // Map from processor/lpu id to its physical location and microcode revision.
+  map<int32, LpuInfo> lpu_info = 3;
+  // Map from processor/lpu id to its frequency.
+  map<int32, LpuFrequency> frequency = 4;
+  // Map from processor/lpu id to its thermal_throttle count.
+  map<int32, int32> thermal_throttle_count = 5;
+  // Map from processor/lpu id to its Identifiers.
+  map<int32, Identifier> lpu_identifiers = 6;
+  // Map from processor/lpu id to its socket Identifiers.
+  map<int32, Identifier> socket_identifiers = 7;
+  // Map from processor/lpu id to its package Identifier.
+  map<int32, Identifier> package_identifiers = 9;
+}

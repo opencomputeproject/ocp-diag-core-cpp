@@ -1,0 +1,28 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface.networkinterface;
+
+import "ocpdiag/core/hwinterface/identifier.proto";
+
+enum InfoType {
+  DEFAULT = 0;
+  IDENTIFIER = 1;
+  LINKINFO = 2;
+}
+
+message LinkInfo {
+  bool enabled= 1;
+  int32 speed_mbps = 2;
+  string mac_address = 3;
+}
+
+message Info {
+  Identifier id = 1;
+  LinkInfo link_info = 2;
+}

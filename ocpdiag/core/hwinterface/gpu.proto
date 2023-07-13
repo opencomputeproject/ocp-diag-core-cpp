@@ -1,0 +1,22 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface.gpu;
+
+import "ocpdiag/core/hwinterface/identifier.proto";
+
+enum InfoType {
+  DEFAULT = 0;
+  IDENTIFIER = 1;
+  CPU_AFFINITY = 2;
+}
+
+message Info {
+  ocpdiag.hwinterface.Identifier id = 1;
+  int32 cpu_affinity = 2;
+}

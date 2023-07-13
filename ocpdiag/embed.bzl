@@ -68,7 +68,7 @@ def cc_data_library(
                   flatten_arg,
                   name,
               ),
-        exec_tools = ["@com_google_ecclesia//ecclesia/lib/file:cc_embed"],
+        tools = ["@com_google_ecclesia//ecclesia/lib/file:cc_embed"],
     )
 
     # Encapsulate the code an header files into a cc_library.

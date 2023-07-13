@@ -1,0 +1,342 @@
+info {
+  topology {
+    sockets_enabled: 2
+    logical_cores_enabled: 8
+    physical_cores_enabled: 4
+    logical_cores_max_per_socket: 4
+  }
+  signature {
+    family: 6
+    model: 85
+    stepping: 3
+    vendor: VENDOR_INTEL
+  }
+  lpu_info {
+    key: 0
+    value {
+      microcode_revision: 16777561
+    }
+  }
+  lpu_info {
+    key: 1
+    value {
+      core_id: 1
+      microcode_revision: 16777561
+    }
+  }
+  lpu_info {
+    key: 2
+    value {
+      socket_id: 1
+      numa_node_id: 1
+      microcode_revision: 16777561
+    }
+  }
+  lpu_info {
+    key: 3
+    value {
+      socket_id: 1
+      core_id: 1
+      numa_node_id: 1
+      microcode_revision: 16777561
+    }
+  }
+  lpu_info {
+    key: 4
+    value {
+      thread_id: 1
+      microcode_revision: 16777561
+    }
+  }
+  lpu_info {
+    key: 5
+    value {
+      core_id: 1
+      thread_id: 1
+      microcode_revision: 16777561
+    }
+  }
+  lpu_info {
+    key: 6
+    value {
+      socket_id: 1
+      thread_id: 1
+      numa_node_id: 1
+      microcode_revision: 16777561
+    }
+  }
+  lpu_info {
+    key: 7
+    value {
+      socket_id: 1
+      core_id: 1
+      thread_id: 1
+      numa_node_id: 1
+      microcode_revision: 16777561
+    }
+  }
+  frequency {
+    key: 0
+    value {
+      design_freq: 2000127
+      cur_freq: 1000000
+      max_freq: 2001000
+    }
+  }
+  frequency {
+    key: 1
+    value {
+      design_freq: 2000127
+      cur_freq: 1000001
+      max_freq: 2001000
+    }
+  }
+  frequency {
+    key: 2
+    value {
+      design_freq: 2000127
+      cur_freq: 1000002
+      max_freq: 2001000
+    }
+  }
+  frequency {
+    key: 3
+    value {
+      design_freq: 2000127
+      cur_freq: 1000003
+      max_freq: 2001000
+    }
+  }
+  frequency {
+    key: 4
+    value {
+      design_freq: 2000127
+      cur_freq: 1000004
+      max_freq: 2001000
+    }
+  }
+  frequency {
+    key: 5
+    value {
+      design_freq: 2000127
+      cur_freq: 1000005
+      max_freq: 2001000
+    }
+  }
+  frequency {
+    key: 6
+    value {
+      design_freq: 2000127
+      cur_freq: 1000006
+      max_freq: 2001000
+    }
+  }
+  frequency {
+    key: 7
+    value {
+      design_freq: 2000127
+      cur_freq: 1000007
+      max_freq: 2001000
+    }
+  }
+  thermal_throttle_count {
+    key: 0
+    value: 0
+  }
+  thermal_throttle_count {
+    key: 1
+    value: 1
+  }
+  thermal_throttle_count {
+    key: 2
+    value: 2
+  }
+  thermal_throttle_count {
+    key: 3
+    value: 3
+  }
+  thermal_throttle_count {
+    key: 4
+    value: 4
+  }
+  thermal_throttle_count {
+    key: 5
+    value: 5
+  }
+  thermal_throttle_count {
+    key: 6
+    value: 6
+  }
+  thermal_throttle_count {
+    key: 7
+    value: 7
+  }
+  lpu_identifiers {
+    key: 0
+    value {
+      name: "/CPU0/die0/core0/thread0#processor0"
+      id: "%%/CPU0/die0/core0/thread0#processor0%%"
+    }
+  }
+  lpu_identifiers {
+    key: 1
+    value {
+      name: "/CPU0/die0/core1/thread0#processor1"
+      id: "%%/CPU0/die0/core1/thread0#processor1%%"
+    }
+  }
+  lpu_identifiers {
+    key: 2
+    value {
+      name: "/CPU1/die0/core0/thread0#processor2"
+      id: "%%/CPU1/die0/core0/thread0#processor2%%"
+    }
+  }
+  lpu_identifiers {
+    key: 3
+    value {
+      name: "/CPU1/die0/core1/thread0#processor3"
+      id: "%%/CPU1/die0/core1/thread0#processor3%%"
+    }
+  }
+  lpu_identifiers {
+    key: 4
+    value {
+      name: "/CPU0/die0/core0/thread1#processor4"
+      id: "%%/CPU0/die0/core0/thread1#processor4%%"
+    }
+  }
+  lpu_identifiers {
+    key: 5
+    value {
+      name: "/CPU0/die0/core1/thread1#processor5"
+      id: "%%/CPU0/die0/core1/thread1#processor5%%"
+    }
+  }
+  lpu_identifiers {
+    key: 6
+    value {
+      name: "/CPU1/die0/core0/thread1#processor6"
+      id: "%%/CPU1/die0/core0/thread1#processor6%%"
+    }
+  }
+  lpu_identifiers {
+    key: 7
+    value {
+      name: "/CPU1/die0/core1/thread1#processor7"
+      id: "%%/CPU1/die0/core1/thread1#processor7%%"
+    }
+  }
+  socket_identifiers {
+    key: 0
+    value {
+      name: "CPU0"
+      id: "%%CPU0%%"
+    }
+  }
+  socket_identifiers {
+    key: 1
+    value {
+      name: "CPU0"
+      id: "%%CPU0%%"
+    }
+  }
+  socket_identifiers {
+    key: 2
+    value {
+      name: "CPU1"
+      id: "%%CPU1%%"
+    }
+  }
+  socket_identifiers {
+    key: 3
+    value {
+      name: "CPU1"
+      id: "%%CPU1%%"
+    }
+  }
+  socket_identifiers {
+    key: 4
+    value {
+      name: "CPU0"
+      id: "%%CPU0%%"
+    }
+  }
+  socket_identifiers {
+    key: 5
+    value {
+      name: "CPU0"
+      id: "%%CPU0%%"
+    }
+  }
+  socket_identifiers {
+    key: 6
+    value {
+      name: "CPU1"
+      id: "%%CPU1%%"
+    }
+  }
+  socket_identifiers {
+    key: 7
+    value {
+      name: "CPU1"
+      id: "%%CPU1%%"
+    }
+  }
+  package_identifiers {
+    key: 0
+    value {
+      name: "CPU0"
+      id: "%%CPU0%%"
+    }
+  }
+  package_identifiers {
+    key: 1
+    value {
+      name: "CPU0"
+      id: "%%CPU0%%"
+    }
+  }
+  package_identifiers {
+    key: 2
+    value {
+      name: "CPU1"
+      id: "%%CPU1%%"
+    }
+  }
+  package_identifiers {
+    key: 3
+    value {
+      name: "CPU1"
+      id: "%%CPU1%%"
+    }
+  }
+  package_identifiers {
+    key: 4
+    value {
+      name: "CPU0"
+      id: "%%CPU0%%"
+    }
+  }
+  package_identifiers {
+    key: 5
+    value {
+      name: "CPU0"
+      id: "%%CPU0%%"
+    }
+  }
+  package_identifiers {
+    key: 6
+    value {
+      name: "CPU1"
+      id: "%%CPU1%%"
+    }
+  }
+  package_identifiers {
+    key: 7
+    value {
+      name: "CPU1"
+      id: "%%CPU1%%"
+    }
+  }
+}

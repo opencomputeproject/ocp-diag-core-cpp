@@ -1,0 +1,42 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface.sensor;
+
+import "ocpdiag/core/hwinterface/identifier.proto";
+
+enum InfoType {
+  DEFAULT = 0;
+  IDENTIFIER = 1;
+  READING = 2;
+  LIMITS = 3;
+}
+
+message Reading {
+  double reading = 1;
+  optional double margin = 2;
+  reserved 3;
+}
+
+message Info {
+  ocpdiag.hwinterface.Identifier id = 1;
+  Reading reading = 2;
+  Limits limits = 3;
+}
+
+message Limit {
+  double limit = 1;
+}
+
+message Limits {
+  Limit lower_critical = 1;
+  Limit lower_noncritical = 2;
+  Limit upper_critical = 3;
+  Limit upper_noncritical = 4;
+  //
+}

@@ -1,0 +1,52 @@
+errors {
+  event_timestamp {
+    seconds: 1622733217
+  }
+  ids {
+    name: "CPU_SrcID#0_MC#0_Chan#0_DIMM#0"
+    type: "dimm"
+    id: "%%CPU_SrcID#0_MC#0_Chan#0_DIMM#0%%dimm"
+  }
+  is_correctable: true
+  event_source: MEMORY_ERROR
+  count: 1
+}
+errors {
+  event_timestamp {
+    seconds: 1622733218
+  }
+  ids {
+    name: "CPU_SrcID#0_MC#0_Chan#0_DIMM#0"
+    type: "dimm"
+    id: "%%CPU_SrcID#0_MC#0_Chan#0_DIMM#0%%dimm"
+  }
+  is_correctable: true
+  event_source: MEMORY_ERROR
+  count: 1
+}
+errors {
+  event_timestamp {
+    seconds: 1622733219
+  }
+  ids {
+    name: "CPU_SrcID#0_MC#0_Chan#1_DIMM#0"
+    type: "dimm"
+    id: "%%CPU_SrcID#0_MC#0_Chan#1_DIMM#0%%dimm"
+  }
+  is_fatal: true
+  event_source: MEMORY_ERROR
+  count: 1
+}
+errors {
+  event_timestamp {
+    seconds: 1622733220
+  }
+  ids {
+    name: "CPU_SrcID#0_MC#1_Chan#1_DIMM#0"
+    type: "dimm"
+    id: "%%CPU_SrcID#0_MC#1_Chan#1_DIMM#0%%dimm"
+  }
+  is_correctable: true
+  event_source: MEMORY_ERROR
+  count: 1
+}

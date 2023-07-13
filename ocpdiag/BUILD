@@ -19,5 +19,7 @@ exports_files(["LICENSE"])
 config_setting(
     name = "ovss",
     values = {"define": "release=ovss"},
-    visibility = ["//ocpdiag:__subpackages__"],
+    visibility = [
+        "//ocpdiag:__subpackages__",
+    ],
 )

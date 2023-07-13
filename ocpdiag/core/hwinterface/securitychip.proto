@@ -1,0 +1,52 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface.securitychip;
+
+import "ocpdiag/core/hwinterface/identifier.proto";
+
+enum InfoType {
+  DEFAULT = 0;
+  IDENTIFIER = 1;
+  CRYPTA_ID_INFO = 2;
+  FIRMWARE_VERSION = 3;
+  CERT_INFO = 4;
+}
+
+message CryptaIdInfo {
+  enum Status {
+    UNKNOWN = 0;
+    FAIL = 1;
+    NOT_FOUND = 2;
+    SUCCESS = 3;
+  }
+  Status status = 1;
+  string crypta_id = 2;
+}
+
+message CertInfo {
+  enum Status {
+    UNKNOWN = 0;
+    FAIL = 1;       // failure trying to get certificate info
+    NOT_FOUND = 2;  // certificate info is empty
+    SUCCESS = 3;
+  }
+  Status status = 1;
+  string certificates = 2;
+  int32 num_certificates = 3;
+}
+
+message Info {
+  Identifier identifier = 1;
+  CryptaIdInfo crypta_id_info = 2;
+  // Will be empty if cannot be fetched.
+  string rw_firmware_version = 3;
+  // Will be empty if cannot be fetched.
+  string ro_firmware_version = 4;
+  CertInfo cert_info = 5;
+}

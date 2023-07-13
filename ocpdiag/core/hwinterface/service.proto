@@ -1,0 +1,393 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface;
+
+import "ocpdiag/core/hwinterface/accelerator.proto";
+import "ocpdiag/core/hwinterface/cpu.proto";
+import "ocpdiag/core/hwinterface/ec.proto";
+import "ocpdiag/core/hwinterface/eeprom.proto";
+import "ocpdiag/core/hwinterface/error.proto";
+import "ocpdiag/core/hwinterface/fan.proto";
+import "ocpdiag/core/hwinterface/firmware.proto";
+import "ocpdiag/core/hwinterface/gpu.proto";
+import "ocpdiag/core/hwinterface/identifier.proto";
+import "ocpdiag/core/hwinterface/interface.proto";
+import "ocpdiag/core/hwinterface/memory.proto";
+import "ocpdiag/core/hwinterface/networkinterface.proto";
+import "ocpdiag/core/hwinterface/node.proto";
+import "ocpdiag/core/hwinterface/psu.proto";
+import "ocpdiag/core/hwinterface/securitychip.proto";
+import "ocpdiag/core/hwinterface/sensor.proto";
+import "ocpdiag/core/hwinterface/storage.proto";
+import "ocpdiag/core/hwinterface/system.proto";
+import "ocpdiag/core/results/data_model/legacy_results.proto";
+
+// CPU category
+// Configuration information.
+message GetCpuInfoRequest {
+  // Requests of what information to report in GetCpuInfoResponse.
+  // If no InfoType is defined, all information will be reported.
+  repeated ocpdiag.hwinterface.cpu.InfoType info_types = 1;
+}
+message GetCpuInfoResponse {
+  ocpdiag.hwinterface.cpu.Info info = 1;
+}
+
+// Memory category.
+// Configuration information.
+message GetMemoryInfoRequest {
+  // Requests of what information to report in GetMemoryInfoResponse.
+  // If no InfoType is defined, all information will be reported.
+  repeated ocpdiag.hwinterface.memory.InfoType info_types = 1;
+}
+message GetMemoryInfoResponse {
+  // Map from logical dimm number to its dimm info
+  map<int32, ocpdiag.hwinterface.memory.Info> dimm_infos = 1;
+}
+
+// Sensors Category
+// Identifier and reading information.
+message GetSensorsRequest {
+  // Requests of what information to report in GetSensorsResponse.
+  // If no InfoType is defined, all information will be reported.
+  repeated ocpdiag.hwinterface.sensor.InfoType info_types = 1;
+  reserved 2;
+  // All fields in the following identifiers are regular expressions.
+  // If a certain field is not defined, this field won't apply.
+  // All filters will be combined by "OR".
+  // The logical relationship for the fields in the same filter will be defined
+  // by ocpdiag.hwinterface.Filter.op.
+  // Note: if no sensor matches these filters, a NOT_FOUND error will be
+  // reported. The test should be able to catch this error if it is expected.
+  repeated ocpdiag.hwinterface.Filter sensor_filters = 3;
+}
+message GetSensorsResponse {
+  repeated ocpdiag.hwinterface.sensor.Info sensors = 1;
+}
+
+// Bus Category.
+// PCIe.
+message GetPcieInfoRequest {
+  repeated ocpdiag.hwinterface.interface.InfoType info_types = 1;
+}
+message GetPcieInfoResponse {
+  repeated ocpdiag.hwinterface.interface.PcieInfo info = 1;
+}
+
+// USB.
+message GetUsbInfoRequest {
+  repeated ocpdiag.hwinterface.interface.InfoType info_types = 1;
+}
+message GetUsbInfoResponse {
+  repeated ocpdiag.hwinterface.interface.UsbInfo info = 1;
+}
+
+// NCSI.
+message GetNcsiInfoRequest {
+  repeated ocpdiag.hwinterface.interface.InfoType info_types = 1;
+}
+message GetNcsiInfoResponse {
+  repeated ocpdiag.hwinterface.interface.NcsiInfo info = 1;
+}
+
+// UPI/QPI.
+message GetUpiInfoRequest {
+  repeated ocpdiag.hwinterface.interface.InfoType info_types = 1;
+}
+message GetUpiInfoResponse {
+  repeated ocpdiag.hwinterface.interface.UpiInfo info = 1;
+}
+
+// I2C/smbus.
+message GetI2cInfoRequest {
+  repeated ocpdiag.hwinterface.interface.InfoType info_types = 1;
+}
+message GetI2cInfoResponse {
+  repeated ocpdiag.hwinterface.interface.I2cInfo info = 1;
+}
+
+// SCSI.
+message GetScsiInfoRequest {
+  repeated ocpdiag.hwinterface.interface.InfoType info_types = 1;
+}
+message GetScsiInfoResponse {
+  repeated ocpdiag.hwinterface.interface.ScsiInfo info = 1;
+}
+
+// Boot number
+message GetBootNumberRequest {
+  repeated ocpdiag.hwinterface.interface.InfoType info_types = 1;
+}
+message GetBootNumberResponse {
+  int32 boot_number = 1;
+}
+
+// NvLink.
+message GetNvLinkInfoRequest {
+  repeated ocpdiag.hwinterface.interface.InfoType info_types = 1;
+}
+message GetNvLinkInfoResponse {
+  repeated ocpdiag.hwinterface.interface.NvLinkInfo info = 1;
+}
+
+// Error Category
+message GetErrorsRequest {
+  // Requests of what error to report in GetErrorsRequest.
+  // If no event_sources is defined, all events will be reported.
+  repeated ocpdiag.hwinterface.error.EventSource event_sources = 1;
+  // Filter errors within specific timestamp
+  ocpdiag.hwinterface.error.TimestampFilter filter = 2;
+  // Report more debug info if applicable
+  bool report_debug_info = 3;
+}
+message GetErrorsResponse {
+  repeated ocpdiag.hwinterface.error.ErrorInfo errors = 1;
+}
+
+message ClearErrorsRequest {
+  enum ErrorType {
+    // By Default, all Errors are cleared
+    DEFAULT = 0;
+    // Clear Only System Events
+    SYSTEM_EVENT = 1;
+  }
+
+  // list of error types to be cleared
+  repeated ErrorType error_types = 1;
+}
+message ClearErrorsResponse {}
+
+// Hardware Information.
+message GetHwInfoRequest {
+  enum InfoType {
+    DEFAULT = 0;
+    HW_INFO = 1;
+    FRU_IDENTIFIERS = 2;
+    TRAY_IDENTIFIERS = 3;
+  }
+  repeated InfoType info_types = 2;
+  // This is a list of "ocpdiag.hwinterface.Identifier.id"s to collect hardware
+  // information.
+  repeated string ids = 1;
+}
+message GetHwInfoResponse {
+  // Map from ocpdiag.hwinterface.GetHwInfoRequest.id to its hardware
+  // information.
+  map<string, third_party.ocpdiag.results_pb.HardwareInfo> hw_info = 3;
+  // Map from ocpdiag.hwinterface.GetHwInfoRequest.id to its fru identifier.
+  map<string, Identifier> fru_identifiers = 4;
+  // Map from ocpdiag.hwinterface.GetHwInfoRequest.id to its tray identifier.
+  map<string, Identifier> tray_identifiers = 5;
+}
+
+// Fan Category.
+// Information.
+message GetFanInfoRequest {
+  repeated ocpdiag.hwinterface.fan.InfoType info_types = 1;
+  // All fields in the following identifiers are regular expressions.
+  // If a certain field is not defined, this field won't apply.
+  // All filters will be combined by "OR".
+  repeated ocpdiag.hwinterface.Filter fan_filters = 2;
+}
+
+message GetFanInfoResponse {
+  repeated ocpdiag.hwinterface.fan.Info info = 1;
+}
+
+message SetFanPwmRequest {
+  // Mapping from fan id in ocpdiag.hwinterface.Identifiers.id to
+  // the PWM (in percentage) to set.
+  //
+  // This API will not change the fan mode automatically. Please manually call
+  // SetFanZone() to set to "Manual" mode beforehand.
+  map<string, int32> pwms = 1;
+}
+
+message SetFanPwmResponse {
+  repeated string debug_strings = 1;
+}
+
+message SetFanZoneRequest {
+  enum FanZoneMode {
+    UNKNOWN = 0;
+    MANUAL = 1;
+    AUTO = 2;
+  }
+  FanZoneMode mode = 1;
+  repeated string ids = 2;
+}
+
+message SetFanZoneResponse {
+  repeated string debug_strings = 1;
+}
+
+message GetEepromInfoRequest {
+  repeated ocpdiag.hwinterface.eeprom.InfoType info_types = 1;
+}
+
+message GetEepromInfoResponse {
+  repeated ocpdiag.hwinterface.eeprom.Info info = 1;
+}
+
+message ReadEepromRequest {
+  Identifier id = 1;
+  int32 offset = 2;
+  int32 length = 3;
+}
+
+message ReadEepromResponse {
+  bytes data = 1;
+}
+
+message RebootRequest {
+  enum RebootType {
+    REBOOTTYPE_UNSPECIFIED = 0;
+    REBOOTTYPE_HARD = 1;
+    REBOOTTYPE_SOFT = 2;
+  }
+  RebootType type = 1;
+}
+
+message RebootResponse {}
+
+message GetStatusRequest {
+  string target = 1;
+}
+
+message GetStatusResponse {}
+
+// Information
+message GetSystemInfoRequest {
+  repeated ocpdiag.hwinterface.system.InfoType info_types = 1;
+}
+
+message GetSystemInfoResponse {
+  ocpdiag.hwinterface.system.Info info = 1;
+}
+
+// Beckend versions.
+message GetVersionRequest {}
+
+message GetVersionResponse {
+  repeated third_party.ocpdiag.results_pb.SoftwareInfo softwares = 1;
+}
+
+message GetNodeInfoRequest {
+  repeated ocpdiag.hwinterface.node.InfoType info_types = 1;
+}
+
+message GetNodeInfoResponse {
+  ocpdiag.hwinterface.node.Info info = 1;
+}
+
+// Memory convert.
+message MemoryConvertRequest {
+  // Address to translate.
+  uint64 physical_address = 1;
+  // Bits with byte to translate. Default “0xFF”.
+  optional uint32 byte_mask = 2;
+  // Least significant bit of address to translate. Default = 0.
+  optional uint32 lsb = 3;
+}
+message MemoryConvertResponse {
+  // Identifier of DIMM plugin.
+  repeated Identifier identifiers = 1;
+}
+
+message GetSecurityChipInfoRequest {
+  repeated ocpdiag.hwinterface.securitychip.InfoType info_types = 1;
+}
+
+message GetSecurityChipInfoResponse {
+  repeated ocpdiag.hwinterface.securitychip.Info info = 1;
+}
+
+// EC category information
+message GetEcInfoRequest {
+  repeated ocpdiag.hwinterface.ec.InfoType info_types = 1;
+}
+
+message GetEcInfoResponse {
+  repeated ocpdiag.hwinterface.ec.Info info = 1;
+}
+
+message GetFirmwareInfoRequest {
+  repeated ocpdiag.hwinterface.firmware.InfoType info_types = 1;
+  repeated ocpdiag.hwinterface.Filter filters = 2;
+}
+
+message GetFirmwareInfoResponse {
+  repeated ocpdiag.hwinterface.firmware.Info info = 1;
+}
+
+message GetNetworkInterfaceInfoRequest {
+  repeated ocpdiag.hwinterface.networkinterface.InfoType info_types = 1;
+}
+
+message GetNetworkInterfaceInfoResponse {
+  repeated ocpdiag.hwinterface.networkinterface.Info info = 1;
+}
+
+message GetStorageInfoRequest {
+  repeated ocpdiag.hwinterface.storage.InfoType info_types = 1;
+}
+
+message GetStorageInfoResponse {
+  repeated ocpdiag.hwinterface.storage.Info info = 1;
+}
+
+message GetPsuInfoRequest {
+  repeated ocpdiag.hwinterface.psu.InfoType info_types = 1;
+}
+
+message GetPsuInfoResponse {
+  repeated ocpdiag.hwinterface.psu.Info info = 1;
+}
+
+message GetGpuInfoRequest {
+  repeated ocpdiag.hwinterface.gpu.InfoType info_types = 1;
+}
+
+message GetGpuInfoResponse {
+  repeated ocpdiag.hwinterface.gpu.Info info = 1;
+}
+
+message GetAcceleratorInfoRequest {
+  repeated ocpdiag.hwinterface.accelerator.InfoType info_types = 1;
+}
+
+message GetAcceleratorInfoResponse {
+  repeated ocpdiag.hwinterface.accelerator.Info info = 1;
+  repeated ocpdiag.hwinterface.accelerator.Plugin plugins = 2;
+}
+
+message DevicePowerState {
+  enum PowerState {
+    POWER_UNKNOWN = 0;
+    POWER_ON = 1;
+    POWER_OFF = 2;
+  }
+
+  optional Identifier id = 1;
+  optional PowerState power_state = 2;
+}
+
+message SetDevicePowerRequest {
+  optional DevicePowerState device_power_state = 1;
+}
+
+message SetDevicePowerResponse {}
+
+message GetDevicePowerRequest {
+  repeated Identifier id = 1;
+}
+
+message GetDevicePowerResponse {
+  repeated DevicePowerState device_power_state = 1;
+}

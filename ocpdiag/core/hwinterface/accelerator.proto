@@ -1,0 +1,92 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface.accelerator;
+
+import "ocpdiag/core/hwinterface/identifier.proto";
+
+enum InfoType {
+  INFO_TYPE_DEFAULT = 0;
+  INFO_TYPE_IDENTIFIER = 1;
+  INFO_TYPE_PLUGIN = 2;
+}
+
+message Info {
+  ocpdiag.hwinterface.Identifier id = 1;
+
+  // PCIe location of the ASIC.
+  string pcie_location = 2;  // e.g., "0000:63:00.0"
+
+  message ChipLocation {
+    // The name of the host controlling the described chip.
+    optional string host_name = 1;
+
+    // The PE slot index on a host machine where ASIC is attached.
+    optional int32 pe_index = 2;
+
+    // The chip number of the accelerator. Please note this is different from
+    // the device enumeration order in kernel (i.e., /dev/accel_X).
+    optional int32 chip_number = 3;  // e.g., 0, 1, or 2
+  }
+
+  // Chip location within the system/tray/card.
+  optional ChipLocation chip_location = 3;
+
+  // Devpath of the FRU containing this ASIC.
+  string fru_devpath = 4;  // e.g., "/phys/PE3/CDFP/DOWNLINK"
+
+  // Kernel devpath of the ASIC.
+  string kernel_devpath = 5;
+
+  // Kernel device ID of the ASIC (non-deterministic).
+  optional int32 device_id = 6;
+
+  // Index of the PCIe expansion tray in which the ASIC is populated.
+  optional int32 tray_index = 7;
+
+  // Index of the PCIe plugin card in which the ASIC is populated.
+  optional int32 card_index = 8;
+
+  // Virtual functions of the ASIC.
+  repeated VirtualFunction virtual_functions = 9;
+
+  // Serial number of the ASIC
+  optional string serial_number = 10;
+
+  // Firmware version of the ASIC
+  optional string firmware_version = 11;
+
+  // Accelerator type of the ASIC
+  optional string type = 12;
+
+  message Subcomponent {
+    optional string devpath = 1;
+    optional string serial_number = 2;
+    optional string name = 3;
+  }
+
+  // Devpaths of the ASIC's subcomponents
+  repeated Subcomponent subcomponents = 13;
+}
+
+// VirtualFunction defines the address and location of a virtual function of an
+// ASIC's physical function.
+message VirtualFunction {
+  // PCIe location of the virtual function.
+  string pcie_location = 1;
+
+  // Kernel devpath of the virtual function.
+  string kernel_devpath = 2;
+
+  // Kernel device ID of the virtual function (non-deterministic).
+  int32 device_id = 3;
+}
+
+message Plugin {
+  ocpdiag.hwinterface.Identifier id = 1;
+}
