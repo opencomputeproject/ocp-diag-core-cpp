@@ -1,0 +1,53 @@
+dimm_infos {
+  key: 0
+  value {
+    presence {
+      present_in_slot: true
+      present_in_firmware: true
+    }
+    size_bytes: 17179869184
+    identifier {
+      name: "DIMM0"
+      type: "dimm"
+      id: "%%DIMM0%%dimm"
+    }
+    location {
+      slot_name: "DIMM0"
+    }
+    fw_memory_type: FW_MEMORYTYPE_DDR4
+    speed {
+      firmware_speed_mhz: 2666
+      operating_speed_mhz: 2666
+    }
+    jedec {
+      manufacturer_index: 1
+    }
+  }
+}
+dimm_infos {
+  key: 1
+  value {
+    presence {
+      present_in_slot: true
+      present_in_firmware: true
+    }
+    size_bytes: 17179869184
+    identifier {
+      name: "DIMM1"
+      type: "dimm"
+      id: "%%DIMM1%%dimm"
+    }
+    location {
+      slot_name: "DIMM1"
+    }
+    fw_memory_type: FW_MEMORYTYPE_DDR4
+    speed {
+      firmware_speed_mhz: 2666
+      operating_speed_mhz: 2666
+    }
+    jedec {
+      manufacturer_index: 2
+    }
+  }
+}
+

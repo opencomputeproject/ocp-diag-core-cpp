@@ -12,11 +12,13 @@
 #include "absl/strings/str_format.h"
 #include "absl/strings/string_view.h"
 
+#ifndef RETURN_IF_ERROR
 #define RETURN_IF_ERROR(s) \
   {                        \
     auto c = (s);          \
     if (!c.ok()) return c; \
   }
+#endif
 
 // `RETURN_IF_ERROR_WITH_MESSAGE` behave the same with RETURN_IF_ERROR in
 // addition with a message.
@@ -30,6 +32,7 @@
 //
 //   Returns a status: "INTERNAL: Failed to parse field.
 //   [ocpdiag/LoadConfig/main.cc#25='Failed to load config.']"
+#ifndef RETURN_IF_ERROR_WITH_MESSAGE
 #define RETURN_IF_ERROR_WITH_MESSAGE(s, msg)                                   \
   {                                                                            \
     auto c = (s);                                                              \
@@ -42,12 +45,15 @@
       return c;                                                                \
     }                                                                          \
   }
+#endif
 
+#ifndef RETURN_VOID_IF_ERROR
 #define RETURN_VOID_IF_ERROR(s) \
   {                             \
     auto c = (s);               \
     if (!c.ok()) return;        \
   }
+#endif
 
 // Executes an expression `expr` that returns an `absl::StatusOr<T>`.
 // On Ok, move its value into the variable defined by `var`,
@@ -60,9 +66,11 @@
 // Example: Assigning to an existing variable:
 //   ValueType value;
 //   ASSIGN_OR_RETURN(value, MaybeGetValue(arg));
+#ifndef ASSIGN_OR_RETURN
 #define ASSIGN_OR_RETURN(var, expr)           \
   OCPDIAG_STATUS_MACROS_ASSIGN_OR_RETURN_IMPL( \
       OCPDIAG_STATUS_MACROS_CONCAT(_status_or_expr, __LINE__), var, expr)
+#endif
 
 #define OCPDIAG_STATUS_MACROS_ASSIGN_OR_RETURN_IMPL(c, v, s) \
   auto c = (s);                                             \

@@ -1,0 +1,48 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface.eeprom;
+
+import "ocpdiag/core/hwinterface/identifier.proto";
+
+// Filters for data types to return for GetEepromInfo calls.
+// If one or more of these values is not specified, returns
+// all fields.
+enum InfoType {
+  DEFAULT = 0;
+  IDENTIFIER = 1;
+  READ_WRITE_MODE = 2;
+  VALID = 3;
+  DATA_FORMAT = 4;
+  SIZE = 5;
+}
+
+enum ReadWriteMode {
+  UNKNOWN = 0;
+  READONLY = 1;
+  WRITEONLY = 2;
+  READWRITE = 3;
+}
+
+enum DataFormat {
+  DATAFORMAT_UNKNOWN = 0;
+  // Field Replaceable Unit eeprom format
+  DATAFORMAT_FRU = 1;
+  // DIMM SPD eeprom format
+  DATAFORMAT_SPD = 2;
+}
+
+message Info {
+  Identifier id = 1;
+  ReadWriteMode read_write_mode = 2;
+  // Whether readable content from the Eeprom is properly formatted
+  bool valid = 3;
+  DataFormat data_format = 4;
+  // Size in byte
+  int32 size = 5;
+}

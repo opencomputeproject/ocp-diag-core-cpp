@@ -1,0 +1,30 @@
+# proto-file: third_party/ocpdiag/core/hwinterface/service.proto
+# proto-message: GetStorageInfoResponse
+
+info {
+  id {
+    name: "ModelName#SerialName"
+    type: "scsi"
+    id: "%%ModelName#SerialName%%scsi"
+  }
+  system_info {
+    kernel_name: "/dev/sda"
+  }
+  device_type: DEVICETYPE_SSD
+  security_info {
+    mode: SECURITYMODE_ATA
+    level: SECURITYLEVEL_SEC5
+  }
+  ata_info {
+    num_sectors: 209715200
+    logical_sector_size: 512
+    physical_sector_size: 512
+    rpm: 0
+    enabled_capabilities: CAP_SMART
+    supported_capabilities: CAP_SMART
+    supported_capabilities: CAP_GPL
+    supported_capabilities: CAP_SCT
+    supported_capabilities: CAP_SCT_TAB
+    supported_capabilities: CAP_SCT_FEAT
+  }
+}

@@ -38,7 +38,6 @@ load(
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load(
     "//ocpdiag:params_version.bzl",
-    "get_change_number_command",
     "is_bazel",
 )
 
@@ -60,10 +59,42 @@ def _get_version_number(ctx):
     else:
         return version, ""
 
+def _get_change_number_command():
+    """Generates a command that gets the change number from workspace.
+
+    Returns:
+        A bash script that gets the change number as variable `change_number`.
+    """
+    if is_bazel():
+        key = "BUILD_COMMIT_SHA"
+        workspace_file_path = "bazel-out/volatile-status.txt"
+    else:
+        key = "BUILD_CHANGELIST"
+        workspace_file_path = "blaze-out/build-changelist.txt"
+
+    # Note that awk command returns the value from the key-value pair
+    # containing the version
+    return """
+    key_val_pair=`cat {} | grep "{}" || true`
+    if [ -n "$$key_val_pair" ]
+    then
+        change_number=`echo "$$key_val_pair" | awk '{{printf $$2}}'`
+    else
+        change_number="UNKNOWN"
+    fi
+    """.format(workspace_file_path, key)
+
+def _get_change_link_url():
+    if is_bazel():
+        url = "https://ocpdiag-review.git.corp.google.com/q/$${change_number}"
+    else:
+        url = "https://critique.corp.google.com/cl/$${change_number}"
+    return url
+
 def _get_version_file_template_command():
     """Generates a command that creates the OCPDiag debian version file template.
 
-    This is done by using get_change_number_command() to extract the variable
+    This is done by using _get_change_number_command() to extract the variable
     $change_number and get the link of the corresponding change and then writing
     the version variable and the source link to a debian version file template.
 
@@ -71,25 +102,19 @@ def _get_version_file_template_command():
         A bash script that create the version file template as a string to be included
         in a genrule.
     """
-    if is_bazel():
-        #
-        url = "https://ocpdiag-review.git.corp.google.com/c/ocpdiag/+/$${change_number}"
-    else:
-        url = "https://critique.corp.google.com/cl/$${change_number}"
-
-    change_number_cmd = get_change_number_command()
+    change_number_cmd = _get_change_number_command()
     build_version_file_cmd = """
     echo "Version: {version_var}\nSource: {url}" >> $@
     """.format(
         version_var = _VERSION_VAR,
-        url = url,
+        url = _get_change_link_url(),
     )
     return change_number_cmd + build_version_file_cmd
 
 def _get_description_file_template_command(description):
     """Generates a command that creates the OCPDiag debian description file template.
 
-    This is done by using get_change_number_command() to extract the variable
+    This is done by using _get_change_number_command() to extract the variable
     $change_number and get the link of the corresponding change and then writing
     the description and the source link to a debian description file template.
 
@@ -100,18 +125,12 @@ def _get_description_file_template_command(description):
         A bash script that create the description file template as a string to be included
         in a genrule.
     """
-    if is_bazel():
-        #
-        url = "https://ocpdiag-review.git.corp.google.com/c/ocpdiag/+/$${change_number}"
-    else:
-        url = "https://critique.corp.google.com/cl/$${change_number}"
-
-    change_number_cmd = get_change_number_command()
+    change_number_cmd = _get_change_number_command()
     build_version_file_cmd = """
     echo "{description} Source: {url}" >> $@
     """.format(
         description = description,
-        url = url,
+        url = _get_change_link_url(),
     )
     return change_number_cmd + build_version_file_cmd
 
