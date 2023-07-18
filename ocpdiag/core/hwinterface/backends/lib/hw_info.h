@@ -39,12 +39,6 @@ void PopulateId(
     Identifier& identifier,
     const absl::flat_hash_map<std::string, std::string>* id_map = nullptr);
 
-// Populates field `id` for a ocpdiag::hwinterface::Identifier. Converts local to
-// global hw component id if a match is found in the id_map. For Gsys backend.
-void PopulateIdForGsys(
-    Identifier& identifier, const internal::NodeInfo& node_info,
-    const absl::flat_hash_map<std::string, std::string>* id_map = nullptr);
-
 // Returns identifier from unique string `id`.
 absl::StatusOr<Identifier> UnmarshalIdentifier(absl::string_view id);
 

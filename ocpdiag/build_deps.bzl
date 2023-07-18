@@ -160,9 +160,9 @@ def load_deps(ocpdiag_package_name = "ocpdiag"):
     maybe(
         http_archive,
         "com_google_ecclesia",
-        url = "https://github.com/google/ecclesia-machine-management/archive/bc1fc5cf8bcd48db3c92d70c72d8eef6dfba3b18.zip",  # 2023-05-17
-        strip_prefix = "ecclesia-machine-management-bc1fc5cf8bcd48db3c92d70c72d8eef6dfba3b18",
-        sha256 = "3c5b58f0c3d6c9e6f5bce01ff686419748e205165d8c4556712c1d6c14019a29",
+        url = "https://github.com/google/ecclesia-machine-management/archive/2613485c22610d5bade43a6ef4022ae8341700b6.zip",  # 2023-05-17
+        strip_prefix = "ecclesia-machine-management-2613485c22610d5bade43a6ef4022ae8341700b6",
+        sha256 = "96393d45fe63b12576ccd95c4fe61d894cf8588d33d489ff01075fa44bb74406",
     )
 
     maybe(

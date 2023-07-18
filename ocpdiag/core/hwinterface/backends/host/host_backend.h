@@ -58,6 +58,9 @@ class HostBackend : public OCPDiagServiceInterface {
 
   absl::StatusOr<RebootResponse> Reboot(const RebootRequest& req) final;
 
+  absl::StatusOr<MemoryConvertResponse> MemoryConvert(
+      const MemoryConvertRequest& req) final;
+
   absl::StatusOr<GetStorageInfoResponse> GetStorageInfo(
       const GetStorageInfoRequest& req) final;
 

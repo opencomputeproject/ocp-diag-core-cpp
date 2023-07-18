@@ -17,6 +17,7 @@ cc_library(
     srcs = [
         "host_backend.cc",
         "memory.cc",
+        "memory_convert.cc",
         "node_info.cc",
         "storage_info.cc",
     ],
@@ -71,6 +72,7 @@ cc_test(
     size = "small",
     srcs = [
         "host_backend_test.cc",
+        "memory_convert_test.cc",
         "memory_test.cc",
     ],
     data = glob(["testdata/*/*"]),

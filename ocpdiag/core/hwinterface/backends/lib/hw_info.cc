@@ -94,12 +94,6 @@ void PopulateId(Identifier& identifier,
       "%"));
 }
 
-void PopulateIdForGsys(
-    Identifier& identifier, const NodeInfo& node_info,
-    const absl::flat_hash_map<std::string, std::string>* id_map) {
-  PopulateId(identifier, id_map);
-}
-
 absl::StatusOr<Identifier> UnmarshalIdentifier(absl::string_view id) {
   Identifier identifier;
   constexpr int kIdentifierComponentsCount = 5;
