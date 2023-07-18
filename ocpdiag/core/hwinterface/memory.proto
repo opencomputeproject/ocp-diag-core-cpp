@@ -1,0 +1,99 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface.memory;
+
+import "ocpdiag/core/hwinterface/identifier.proto";
+
+enum InfoType {
+  DEFAULT = 0;
+  PRESENCE = 1;
+  SIZE = 2;
+  SPD_EEPROM = 3;
+  DIMM_IDENTIFIER = 4;
+  MEMORY_TYPE = 5;
+  FW_MEMORY_TYPE = 7;
+  DIMM_LOCATION = 6;
+  SPEED = 8;
+  JEDEC = 9;
+}
+
+enum MemoryType {
+  MEMORYTYPE_UNKNOWN = 0;
+  MEMORYTYPE_SYSTEM_RAM = 1;
+  MEMORYTYPE_PLUGIN_RAM = 2;
+}
+
+enum FwMemoryType {
+  FW_MEMORYTYPE_UNKNOWN = 0;
+  FW_MEMORYTYPE_INVALID = 1;
+  FW_MEMORYTYPE_OTHER = 2;
+  FW_MEMORYTYPE_DRAM = 3;
+  FW_MEMORYTYPE_EDRAM = 4;
+  FW_MEMORYTYPE_VRAM = 5;
+  FW_MEMORYTYPE_SRAM = 6;
+  FW_MEMORYTYPE_RAM = 7;
+  FW_MEMORYTYPE_ROM = 8;
+  FW_MEMORYTYPE_FLASH = 9;
+  FW_MEMORYTYPE_EEPROM = 10;
+  FW_MEMORYTYPE_FEPROM = 11;
+  FW_MEMORYTYPE_EPROM = 12;
+  FW_MEMORYTYPE_CDRAM = 13;
+  FW_MEMORYTYPE_3DRAM = 14;
+  FW_MEMORYTYPE_SDRAM = 15;
+  FW_MEMORYTYPE_SGRAM = 16;
+  FW_MEMORYTYPE_RDRAM = 17;
+  FW_MEMORYTYPE_DDR3 = 18;
+  FW_MEMORYTYPE_DDR4 = 19;
+  FW_MEMORYTYPE_DDR5 = 20;
+}
+
+message Presence {
+  // Whether the DIMM is present/plugged into the slot.
+  bool present_in_slot = 1;
+  // Whether the DIMM is present according to the firmware.
+  bool present_in_firmware = 2;
+}
+
+message Location {
+  int32 slot_number = 1;
+  string slot_devpath = 2;
+  string slot_name = 3;
+}
+
+message Speed {
+  int32 firmware_speed_mhz = 1;
+  int32 operating_speed_mhz = 2;
+}
+
+// Jedec Standard Manufacturer's Identification Code
+message Jedec {
+  int32 manufacturer_table = 2;
+  int32 manufacturer_index = 3;
+}
+
+message Info {
+  // Presence information.
+  Presence presence = 1;
+  // Size of the DIMM in bytes.
+  uint64 size_bytes = 2;
+  // Name of the EEPROM device associated with the SPD on this DIMM.
+  string spd_eeprom_name = 3;
+  Identifier identifier = 4;
+  MemoryType memory_type = 5;
+  // Type of the DIMM reported by firmware.
+  FwMemoryType fw_memory_type = 7;
+  // Dimm slot location.
+  Location location = 6;
+  // Memory speed in mhz.
+  Speed speed = 8;
+  // The JEDEC table/index lookup for the manufacturer.
+  Jedec jedec = 9;
+  // SPD checksum status
+  bool spd_checksum_valid = 10;
+}

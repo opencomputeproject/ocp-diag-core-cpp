@@ -1,0 +1,8 @@
+Memory controller events:
+1 2021-06-03 15:13:37 +0000 1 Corrected error(s): FAKE ERROR at CPU_SrcID#0_MC#0_Chan#0_DIMM#0 location: 0:0:0:0, addr 0, grain 5, syndrome 0 for EDAC testing only
+2 2021-06-03 15:13:38 +0000 1 Corrected error(s): FAKE ERROR at CPU_SrcID#0_MC#0_Chan#0_DIMM#0 location: 0:0:0:0, addr 0, grain 5, syndrome 0 for EDAC testing only
+3 2021-06-03 15:13:38 +0000 2 Uncorrected error(s): FAKE ERROR at unknown memory location: 0:0:1:0, addr 0, grain 0, syndrome 0 for EDAC testing only
+4 2021-06-03 15:13:39 +0000 1 Fatal error(s): FAKE ERROR at CPU_SrcID#0_MC#0_Chan#1_DIMM#0 location: 0:1:0:0, addr 0, grain 5, syndrome 0 for EDAC testing only
+5 2021-06-03 15:13:39 +0000 1 Info error(s): FAKE ERROR at CPU_SrcID#0_MC#1_Chan#0_DIMM#0 location: 1:0:0:0, addr 0, grain 5, syndrome 0 for EDAC testing only
+6 2021-06-03 15:13:40 +0000 1 Corrected error(s): FAKE ERROR at CPU_SrcID#0_MC#1_Chan#1_DIMM#0 location: 1:1:0:0, addr 0, grain 5, syndrome 0 for EDAC testing only
+

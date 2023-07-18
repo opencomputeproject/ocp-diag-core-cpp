@@ -1,0 +1,202 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface;
+
+import "google/protobuf/duration.proto";
+
+
+enum ProxyType {
+  PROXYTYPE_NONE = 0;
+}
+
+enum BackendType {
+  BACKENDTYPE_UNKNOWN = 0;
+  // Google-internal
+  BACKENDTYPE_GSYS = 1;
+  BACKENDTYPE_MACHINE_MANAGER = 2;  // May become shared with vendors later.
+  // Accessible inside and outside of Google
+  BACKENDTYPE_BMC_DIAGNOSTIC_INTERFACE = 3;
+  BACKENDTYPE_REDFISH = 4;
+  BACKENDTYPE_HOST = 5;  // Host Diagnostic Interface
+  BACKENDTYPE_FAKE = 8;
+  // Google-internal
+  BACKENDTYPE_MIMIK_REDFISH = 6;
+  // Next Id: 9
+}
+
+message GsysConfigOptions {
+  // Time to wait for connection to be established.
+  int32 dial_timeout_seconds = 1;
+  // Ecclesia OS domain is set to empty string, which will give us the
+  // aggregated system view.
+  // Otherwise, sets OS domain to the local os domain name got from
+  // "/etc/google/mmanager-config.pb"
+  bool is_system_view = 2;
+  // Enable memory_fast_polling with gsys.
+  bool memory_fast_polling = 3;
+}
+
+message RedfishConfigOptions {
+  reserved 1, 2, 3, 4;
+  // Target address where Redfish (BMCWeb) runs. It can be a BMC or IMC.
+  string target_address = 5;
+  // Port Redfish (BMCWeb) listens to.
+  // The port is 443 by default.
+  int32 port = 6;
+
+  enum AuthMethod {
+    DEFAULT = 0;  // Default is set to BASIC authentication method.
+    BASIC = 1;    // HTTP Username + Password authentication.
+    TLS = 2;      // HTTPs
+  }
+  AuthMethod auth_method = 7;
+
+  message BasicAuthConfig {
+    string user_name = 1;
+    string password = 2;
+  }
+  BasicAuthConfig basic_auth_config = 8;
+
+  message TlsAuthConfig {
+    // cert_file and key_file will be used to authenticate Redfish http calls.
+    // In production environment, we will get the keys from KeyStore to
+    // authenticate prod-signed gBMCs.
+    // In vendor/manufacturing environment, we expect vendors/manufacturers to
+    // pass their own certs to authenticate openBMCs.
+    // If the both options are no-op, we will get the default certs under
+    // //ocpdiag/lib/hal/backends/redfish/ocpdiag.crt
+    // and //ocpdiag/lib/hal/backends/redfish/ocpdiag.key,
+    // which are only valid on dev-signed gBMC.
+    string cert_file = 1;
+    string key_file = 2;
+    reserved 3;
+  }
+  TlsAuthConfig tls_auth_config = 9;
+
+  // This specifies the caching policy that the QueryEngine should use for a
+  // redfish agent.
+  message RedfishCachePolicy {
+    enum NoCache {
+      NO_CACHE = 0;
+    }
+    oneof type {
+      // Do not cache locally; all requests will be sent to the agent.
+      NoCache no_cache = 1;
+      // Use a time-based cache where multiple requests made within the
+      // time_based_cache duration will reuse the same cached result.
+      google.protobuf.Duration time_based_cache = 2;
+    }
+  }
+  // This is an optional configuration to explicitly specify a cache policy.
+  // Default cache policy is time based cache with infinite duaration.
+  optional RedfishCachePolicy redfish_cache_policy = 11;
+
+  // This specifies query ids to override default queries in RedfishBackend.
+  // The queries specified here must be compiled in with the generic queries.
+  message RedfishQueryOverrides {
+    string sensor_query = 1;
+  }
+  optional RedfishQueryOverrides redfish_query_overrides = 12;
+}
+
+message MachineManagerConfigOptions {
+  // On systems with a solo-gsys configuration setting this will make the RPCs
+  // accept and produce the same style devpaths that gsys uses. If this is false
+  // then the RPCs will always produce bare path style paths, regardless of what
+  // the underlying gsys uses. This option does nothing on systems that have a
+  // non-gsys backend, or multiple backends.
+  // This is currently is ALWAYS set to true.
+  bool use_native_gsys_devpaths = 1;
+  // Time to wait for connection to be established.
+  // See documentation on GRPC_ARG_KEEPALIVE_TIMEOUT_MS. Default to 60s, which
+  // is the original Stubby default for gsysd set within
+  //
+  int32 dial_timeout_seconds = 2;
+}
+
+message HostConfigOptions {}
+
+message BackendConfigOptions {
+  GsysConfigOptions gsys_options = 1;
+  RedfishConfigOptions redfish_options = 2;
+  MachineManagerConfigOptions machine_manager_options = 3;
+  HostConfigOptions host_options = 4;
+}
+
+// These would be the actual functionalities.
+// Next ID: 39
+enum BackendMethod {
+  BACKENDMETHOD_UNKNOWN = 0;
+  reserved 1, 2;
+  BACKENDMETHOD_GET_SENSORS = 3;
+  BACKENDMETHOD_GET_CPU_INFO = 4;
+  BACKENDMETHOD_GET_ERRORS = 5;
+  BACKENDMETHOD_GET_FAN_INFO = 6;
+  BACKENDMETHOD_SET_FAN_PWM = 7;
+  BACKENDMETHOD_GET_EEPROM_INFO = 8;
+  BACKENDMETHOD_READ_EEPROM = 9;
+  BACKENDMETHOD_GET_MEMORY_INFO = 10;
+  BACKENDMETHOD_REBOOT = 11;
+  BACKENDMETHOD_SET_DEVICE_POWER = 37;
+  BACKENDMETHOD_GET_DEVICE_POWER = 38;
+  BACKENDMETHOD_GET_HW_INFO = 12;
+  BACKENDMETHOD_GET_SYSTEM_INFO = 13;
+  BACKENDMETHOD_GET_NODE_INFO = 14;
+  BACKENDMETHOD_MEMORY_CONVERT = 15;
+  BACKENDMETHOD_SET_FAN_ZONE = 16;
+  BACKENDMETHOD_GET_SECURITY_CHIP_INFO = 17;
+  BACKENDMETHOD_GET_STATUS = 18;
+  BACKENDMETHOD_GET_EC_INFO = 19;
+  BACKENDMETHOD_GET_I2C_INFO = 21;
+  BACKENDMETHOD_GET_FIRMWARE_INFO = 22;
+  BACKENDMETHOD_GET_NETWORK_INTERFACE_INFO = 23;
+  BACKENDMETHOD_GET_STORAGE_INFO = 24;
+  BACKENDMETHOD_GET_PSU_INFO = 25;
+  BACKENDMETHOD_GET_GPU_INFO = 26;
+  BACKENDMETHOD_GET_NCSI_INFO = 27;
+  BACKENDMETHOD_GET_SCSI_INFO = 28;
+  BACKENDMETHOD_GET_NVLINK_INFO = 29;
+  BACKENDMETHOD_GET_BOOT_NUMBER = 30;
+  BACKENDMETHOD_GET_ACCELERATOR_INFO = 32;
+  BACKENDMETHOD_GET_PCIE_INFO = 33;
+  BACKENDMETHOD_GET_USB_INFO = 34;
+  BACKENDMETHOD_GET_UPI_INFO = 35;
+  BACKENDMETHOD_CLEAR_ERRORS = 36;
+}
+
+message EntityDescriptor {
+  // Resolvable hostname to access remotely.
+  // If empty, indicates the OCPDiag executable is running locally - e.g. if the
+  // binary is on a DUT and we want a local connection.
+  string host_address = 1;
+  reserved 2;
+  // For multi-node servers, we would probably also need to specify which node
+  // we want to access.
+  ProxyType proxy = 3;
+}
+
+// This configuration is used to instantiate a service client for one arena.
+message EntityConfiguration {
+  // Describes the entity/arena the MHI will interact with.
+  EntityDescriptor entity = 1;
+  // Per method description of backend assignments. The keys correspond to with
+  // BackendMethod enum values, but enums can't be used directly as keys in a
+  // proto map.
+  map<int64, BackendType> method_configurations = 2;
+  // Default backend for anything unspecified above
+  BackendType default_backend = 3;
+  // Any construction-time parameters that need to be passed to backends.
+  BackendConfigOptions config_options = 4;
+}
+
+// This message provides hardware interface configurations for all the arenas
+// in a single-node or multi-node machine.
+message EntityConfigurations {
+  repeated EntityConfiguration node_entity_configurations = 1;
+}

@@ -45,6 +45,14 @@ def load_deps(ocpdiag_package_name = "ocpdiag"):
     """
     maybe(
         http_archive,
+        "boringssl",
+        url = "https://github.com/google/boringssl/archive/68e30993b3f3bdb18951f6cda462e99ea834ed2d.zip",  # 2023-05-08
+        strip_prefix = "boringssl-68e30993b3f3bdb18951f6cda462e99ea834ed2d",
+        sha256 = "19146bba3d40ff263f07942e6a5b6e979d730363fb72fff8c6883551f2277724",
+    )
+
+    maybe(
+        http_archive,
         "com_google_absl",
         url = "https://github.com/abseil/abseil-cpp/archive/64f00b1f4a064e9e140fc4642ccd55c9c2e2e365.zip",  # 2022-11-08
         strip_prefix = "abseil-cpp-64f00b1f4a064e9e140fc4642ccd55c9c2e2e365",
@@ -73,7 +81,6 @@ def load_deps(ocpdiag_package_name = "ocpdiag"):
         http_archive,
         "six_archive",
         urls = [
-            "http://mirror.bazel.build/pypi.python.org/packages/source/s/six/six-1.16.0.tar.gz",
             "https://pypi.python.org/packages/source/s/six/six-1.16.0.tar.gz",
         ],
         strip_prefix = "six-1.16.0",
@@ -153,9 +160,9 @@ def load_deps(ocpdiag_package_name = "ocpdiag"):
     maybe(
         http_archive,
         "com_google_ecclesia",
-        url = "https://github.com/google/ecclesia-machine-management/archive/47bd18ae21c019a19b697183c4eb792df8e4344b.zip",  # 2023-04-28
-        strip_prefix = "ecclesia-machine-management-47bd18ae21c019a19b697183c4eb792df8e4344b",
-        sha256 = "ddd4b6f1ab9bd2ce9dc837ceb981617799058af35da02bcbc0629401d52ca638",
+        url = "https://github.com/google/ecclesia-machine-management/archive/2613485c22610d5bade43a6ef4022ae8341700b6.zip",  # 2023-05-17
+        strip_prefix = "ecclesia-machine-management-2613485c22610d5bade43a6ef4022ae8341700b6",
+        sha256 = "96393d45fe63b12576ccd95c4fe61d894cf8588d33d489ff01075fa44bb74406",
     )
 
     maybe(

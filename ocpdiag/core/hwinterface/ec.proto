@@ -1,0 +1,30 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface.ec;
+
+import "ocpdiag/core/hwinterface/identifier.proto";
+
+enum InfoType {
+  DEFAULT = 0;
+  IDENTIFIER = 1;
+  FAILSAFE_INFO = 2;
+}
+
+enum FailsafeInfo {
+  UNDEFINED = 0;
+  OVER_TEMPERATURE = 1;
+  FAN = 2;
+  TEMPERATURE = 3;
+  HOST_SENSOR_TIMEOUT = 4;
+}
+
+message Info {
+  Identifier identifier = 1;
+  repeated FailsafeInfo failsafe_info = 2;
+}

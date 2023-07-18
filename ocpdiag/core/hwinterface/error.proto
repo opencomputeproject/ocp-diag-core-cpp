@@ -1,0 +1,76 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface.error;
+
+import "google/protobuf/timestamp.proto";
+import "ocpdiag/core/hwinterface/identifier.proto";
+import "ocpdiag/core/hwinterface/interface.proto";
+
+message TimestampFilter {
+  // Filters out timestamp less or equal to start_timestamp.
+  google.protobuf.Timestamp start_timestamp = 1;
+  // Filters out timestamp greater than end_timestamp.
+  google.protobuf.Timestamp end_timestamp = 2;
+}
+
+enum EventSource {
+  // Source of system event.
+  DEFAULT = 0;
+  MEMORY_ERROR = 1;
+  CPU_ERROR = 2;
+  PCIE_ERROR = 3;
+  PMBUS_ERROR = 4;
+  ADVANCED_DIMM_ERROR = 5;
+  EVENTLOG = 6;
+  GPU_ERROR = 7;
+}
+
+message GPUErrorInfo {
+  string error_type = 1;
+  string error_message = 2;
+}
+
+message ErrorInfo {
+  // Error occured time.
+  google.protobuf.Timestamp event_timestamp = 1;
+  // Error component identifiers.
+  // There are cicumstances where MEMORY_ERROR only gives us partial address and
+  // decoded to two potential broken components.
+  // In this case, we will report all component identifiers in the Error info.
+  repeated ocpdiag.hwinterface.Identifier ids = 2;
+  bool is_correctable = 4;
+  bool is_fatal = 5;
+  // System Event Source that this Error Info parsed from.
+  EventSource event_source = 6;
+
+  // Item other_debug_info will only be provided if
+  // ocpdiag.hwitnerface.GetErrorsRequest.report_debug_info is true.
+  // May be deprecated after enough information is collected to provide an enum.
+  string other_debug_info = 7;
+  // Error count.
+  int32 count = 8;
+  // Provides extra type information of this Error.
+  // The system event could have its own Error_Type for error sources or Type
+  // for event sources.
+  // i.e. TYPE_IOMMU, TYPE_MICROCODE_BIST, etc error types for CPU_ERROR event
+  // source.
+  string event_type = 9;
+  // PCIe location associate with the PCIE_ERROR event source.
+  ocpdiag.hwinterface.interface.PcieInfo.Location pcie_location = 10;
+  // Power Management Bus (PMBus) location associate with the PMBUS_ERROR event
+  // source. PMBus is a variation of I2C that focus on the usage for power
+  // applications.
+  ocpdiag.hwinterface.interface.I2cInfo.Location pmbus_location = 11;
+  // Provides extra DIMM failure type for DIMM events reported in EVENTLOG.
+  optional string dimm_failure_type = 12;
+  // The boot number when the error occured.
+  optional int32 bootnum = 13;
+  // The error details for GPU_ERROR event_source.
+  repeated GPUErrorInfo gpu_error_infos = 14;
+}

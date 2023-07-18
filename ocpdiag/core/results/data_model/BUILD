@@ -32,6 +32,21 @@ py_proto_library(
     deps = [":results_proto"],
 )
 
+proto_library(
+    name = "legacy_results_proto",
+    srcs = ["legacy_results.proto"],
+    deps = [
+        "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:struct_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "legacy_results_cc_proto",
+    deps = [":legacy_results_proto"],
+)
+
 cc_library(
     name = "variant",
     hdrs = ["variant.h"],

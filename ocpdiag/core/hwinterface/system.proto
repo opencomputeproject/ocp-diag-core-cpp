@@ -1,0 +1,31 @@
+// Copyright 2022 Google LLC
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
+
+syntax = "proto3";
+
+package ocpdiag.hwinterface.system;
+
+import "ocpdiag/core/hwinterface/identifier.proto";
+import "ocpdiag/core/results/data_model/legacy_results.proto";
+
+enum InfoType {
+  DEFAULT = 0;
+  HARDWARE_ENUMERATION = 2;
+  SOFTWARE_ENUMERATION = 3;
+  TRAY_ENUMERATION = 4;
+  PLUGIN_ENUMERATION = 1;
+  BOOTNUM = 5;
+  //
+  //
+}
+
+message Info {
+  repeated Identifier hardwares = 2;
+  repeated third_party.ocpdiag.results_pb.SoftwareInfo softwares = 3;
+  repeated Identifier trays = 4;
+  repeated string plugins = 1;
+  int32 bootnum = 5;
+}

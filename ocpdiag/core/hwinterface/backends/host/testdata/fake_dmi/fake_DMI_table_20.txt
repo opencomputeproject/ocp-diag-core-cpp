@@ -1,0 +1,72 @@
+Handle 0x0001, DMI type 1, 27 bytes
+System Information
+        UUID: 00000000-0000-0000-0000-000000000000
+        Wake-up Type: Power Switch
+
+Handle 0x0034, DMI type 17, 84 bytes
+Memory Device
+        Array Handle: 0x0033
+        Error Information Handle: Not Provided
+        Total Width: 72 bits
+        Data Width: 64 bits
+        Size: 16 GB
+        Form Factor: DIMM
+        Set: None
+        Locator: DIMM0
+        Bank Locator: NODE 1
+        Type: DDR4
+        Type Detail: Synchronous
+        Speed: 2666 MT/s
+        Manufacturer: Micron
+        Serial Number: F1234567
+        Asset Tag: CPU1_DIMM_0_AssetTag
+        Part Number: 112233445566-77889
+        Rank: 2
+        Configured Memory Speed: 2666 MT/s
+        Minimum Voltage: 1.2 V
+        Maximum Voltage: 1.2 V
+        Configured Voltage: 1.2 V
+        Module Manufacturer ID: 1
+
+Handle 0x7000, DMI type 17, 84 bytes
+Memory Device
+        Array Handle: 0x0033
+        Error Information Handle: Not Provided
+        Total Width: 72 bits
+        Data Width: 64 bits
+        Size: 16 GB
+        Form Factor: DIMM
+        Set: None
+        Locator: DIMM1
+        Bank Locator: NODE 2
+        Type: DDR4
+        Type Detail: Synchronous
+        Speed: 2666 MT/s
+        Manufacturer: Micron
+        Serial Number: G1234567
+        Asset Tag: CPU1_DIMM_1_AssetTag
+        Part Number: 998877665544-33221
+        Rank: 2
+        Configured Memory Speed: 2666 MT/s
+        Minimum Voltage: 1.2 V
+        Maximum Voltage: 1.2 V
+        Configured Voltage: 1.2 V
+        Module Manufacturer ID: 2
+
+Handle 0x4000, DMI type 20, 19 bytes
+Memory Device Mapped Address
+        Starting Address: 0x00000000000
+        Ending Address: 0x000BFFFFFFF
+        Range Size: 3 GB
+        Physical Device Handle: 0x7000
+        Memory Array Mapped Address Handle: 0x0300
+        Partition Row Position: 1
+
+Handle 0x4001, DMI type 20, 19 bytes
+Memory Device Mapped Address
+        Starting Address: 0x00100000000
+        Ending Address: 0x0043FFFFFFF
+        Range Size: 13 GB
+        Physical Device Handle: 0x7001
+        Memory Array Mapped Address Handle: 0x0301
+        Partition Row Position: 1
