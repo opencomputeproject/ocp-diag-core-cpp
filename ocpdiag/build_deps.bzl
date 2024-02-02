@@ -57,6 +57,8 @@ def load_deps(ocpdiag_package_name = "ocpdiag"):
         url = "https://github.com/abseil/abseil-cpp/archive/64f00b1f4a064e9e140fc4642ccd55c9c2e2e365.zip",  # 2022-11-08
         strip_prefix = "abseil-cpp-64f00b1f4a064e9e140fc4642ccd55c9c2e2e365",
         sha256 = "e7c605119f5aefdf3cd0159f2cbc439c2f7d614c99758be32e0258d49201fc4e",
+        patches = ["abseil_patch.diff"],
+        patch_args = ["-p1"],
     )
 
     maybe(
@@ -101,6 +103,8 @@ def load_deps(ocpdiag_package_name = "ocpdiag"):
         "com_github_grpc_grpc",
         url = "https://github.com/grpc/grpc/archive/refs/tags/v1.51.3.tar.gz",
         strip_prefix = "grpc-1.51.3",
+        patch_args = ["-p1"],
+        patches = ["grpc_patch.diff"],
         sha256 = "feaeeb315133ea5e3b046c2c0231f5b86ef9d297e536a14b73e0393335f8b157",
     )
 
