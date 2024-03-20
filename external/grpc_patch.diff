@@ -1,0 +1,14 @@
+https://github.com/grpc/grpc/pull/31780/commits/18f065b4509e457ca102874830852ecd88b1e177
+diff --git a/src/core/ext/xds/xds_listener.h b/src/core/ext/xds/xds_listener.h
+index 61427483f1888..a3bfed0780cc3 100644
+--- a/src/core/ext/xds/xds_listener.h
++++ b/src/core/ext/xds/xds_listener.h
+@@ -79,6 +79,8 @@ struct XdsListenerResource : public XdsResourceType::ResourceData {
+   };
+ 
+   struct DownstreamTlsContext {
++    DownstreamTlsContext() {}
++
+     CommonTlsContext common_tls_context;
+     bool require_client_certificate = false;
+ 
