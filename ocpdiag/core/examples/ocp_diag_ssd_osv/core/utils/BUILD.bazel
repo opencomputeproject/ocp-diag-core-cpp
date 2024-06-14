@@ -1,0 +1,39 @@
+licenses(["notice"])
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "ocp_diag_ssd_osv_core_utils_lib",
+    srcs = [
+        "BigInt.cpp",
+        "buffer_utils.cc",
+        "thread_manager.cc",
+    ],
+    hdrs = [
+        "BigInt.hpp",
+        "RAIIHandle.h",
+        "buffer_utils.h",
+        "thread_manager.h",
+    ],
+    deps = [
+        "//ocpdiag/core/results:artifact_writer",
+        "//ocpdiag/core/results:measurement_series",
+        "//ocpdiag/core/results:test_run",
+        "//ocpdiag/core/results:test_step",
+        "//ocpdiag/core/results/data_model:dut_info",
+        "//ocpdiag/core/results/data_model:input_model",
+    ]
+)
+
+cc_test(
+    name = "ocp_diag_ssd_osv_core_lib_utils_test",
+    size = "small",
+    srcs =
+        ["buffer_utils_test.cc",
+    ],
+    deps = [
+        "//ocpdiag/core/examples/ocp_diag_ssd_osv/core/utils:ocp_diag_ssd_osv_core_utils_lib",
+        "//ocpdiag/core/results:output_receiver",
+        "@com_google_googletest//:gtest_main",
+    ],
+)

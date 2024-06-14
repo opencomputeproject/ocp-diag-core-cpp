@@ -1,0 +1,8 @@
+cc_binary(
+    name = "ocp_diag_ssd_osv",
+    srcs = ["ocp_diag_ssd_osv_main.cc"],
+    deps = [
+        "//ocpdiag/core/examples/ocp_diag_ssd_osv/app:ocp_diag_ssd_osv_app",
+        "@com_google_absl//absl/flags:parse",
+    ],
+)
