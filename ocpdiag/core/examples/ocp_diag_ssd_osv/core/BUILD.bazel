@@ -1,0 +1,17 @@
+licenses(["notice"])
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "ocp_diag_ssd_osv_core_lib",
+    deps = [
+        "//ocpdiag/core/examples/ocp_diag_ssd_osv/core/utils:ocp_diag_ssd_osv_core_utils_lib",
+        "//ocpdiag/core/examples/ocp_diag_ssd_osv/core/storage:ocp_diag_ssd_osv_core_storage_lib",
+        "//ocpdiag/core/results:artifact_writer",
+        "//ocpdiag/core/results:measurement_series",
+        "//ocpdiag/core/results:test_run",
+        "//ocpdiag/core/results:test_step",
+        "//ocpdiag/core/results/data_model:dut_info",
+        "//ocpdiag/core/results/data_model:input_model",
+    ]
+)

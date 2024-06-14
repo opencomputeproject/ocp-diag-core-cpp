@@ -1,0 +1,80 @@
+licenses(["notice"])
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "ocp_diag_ssd_osv_core_storage_lib",
+    srcs = [
+        "storage_controller/storage_controller_base.cc",
+        "storage_controller/nvme_storage_controller_base.cc",
+        "storage_controller/nvme_storage_controller_linux_inbox.cc",
+        "storage_command/storage_command_base.cc",
+        "storage_command/nvme/storage_nvme_command_base.cc",
+        "storage_command/nvme/admin/storage_nvme_admin_command_base.cc",
+        "storage_command/nvme/admin/storage_nvme_identify_command_base.cc",
+        "storage_command/nvme/admin/storage_nvme_command_identify_controller.cc",
+        "storage_command/nvme/admin/storage_nvme_command_identify_namespace.cc",
+        "storage_command/nvme/admin/storage_nvme_command_get_log_page_base.cc",
+        "storage_command/nvme/admin/storage_nvme_command_get_log_page_smart_health_info.cc",
+        "storage_command/nvme/admin/storage_nvme_command_get_log_page_smart_health_info_data.cc",
+        "storage_command/nvme/admin/storage_nvme_identify_controller_data.cc",
+        "storage_command/nvme/admin/storage_nvme_identify_namespace_data.cc",
+        "storage_command/nvme/io/storage_nvme_io_command_base.cc",
+        "storage_command/nvme/io/storage_nvme_read_command.cc",
+        "storage_command/storage_command_result/storage_command_result_base.cc",
+        "storage_command/storage_command_result/nvme/storage_nvme_command_result.cc",
+        "storage_scanner/nvme/nvme_storage_scanner_interface.cc",
+        "storage_scanner/nvme/nvme_storage_scanner_linux_inbox.cc",
+        "storage_scanner/storage_scan_manager.cc",
+        "storage_model/storage_info_base.cc",
+        "storage_model/nvme_storage_info.cc",
+    ],
+    hdrs = [
+        "storage_controller/storage_controller_base.h",
+        "storage_controller/nvme_storage_controller_base.h",
+        "storage_controller/nvme_storage_controller_linux_inbox.h",
+        "storage_command/storage_command_base.h",
+        "storage_command/nvme/storage_nvme_command_base.h",
+        "storage_command/nvme/admin/storage_nvme_admin_command_base.h",
+        "storage_command/nvme/admin/storage_nvme_identify_command_base.h",
+        "storage_command/nvme/admin/storage_nvme_command_identify_controller.h",
+        "storage_command/nvme/admin/storage_nvme_command_identify_namespace.h",
+        "storage_command/nvme/admin/storage_nvme_command_get_log_page_base.h",
+        "storage_command/nvme/admin/storage_nvme_command_get_log_page_smart_health_info.h",
+        "storage_command/nvme/admin/storage_nvme_command_get_log_page_smart_health_info_data.h",
+        "storage_command/nvme/admin/storage_nvme_identify_controller_data.h",
+        "storage_command/nvme/admin/storage_nvme_identify_namespace_data.h",
+        "storage_command/nvme/io/storage_nvme_io_command_base.h",
+        "storage_command/nvme/io/storage_nvme_read_command.h",
+        "storage_command/storage_command_result/storage_command_result_base.h",
+        "storage_command/storage_command_result/nvme/storage_nvme_command_result.h",
+        "storage_scanner/nvme/nvme_storage_scanner_interface.h",
+        "storage_scanner/nvme/nvme_storage_scanner_linux_inbox.h",
+        "storage_scanner/storage_scan_manager.h",
+        "storage_model/storage_info_base.h",
+        "storage_model/nvme_storage_info.h",
+    ],
+    deps = [
+        "//ocpdiag/core/examples/ocp_diag_ssd_osv/core/utils:ocp_diag_ssd_osv_core_utils_lib",
+        "//ocpdiag/core/results/data_model:input_model",
+    ]
+)
+
+cc_library(
+    name = "ocp_diag_ssd_osv_core_storage_testing_lib",
+    testonly = True,
+    srcs = [
+        "storage_controller/fake_nvme_storage_controller.cc",
+        "storage_controller/mock_nvme_storage_controller.cc",
+        "storage_scanner/storage_fixture.cc",
+    ],
+    hdrs = [
+        "storage_controller/fake_nvme_storage_controller.h",
+        "storage_controller/mock_nvme_storage_controller.h",
+        "storage_scanner/storage_fixture.h",
+    ],
+    deps = [
+        ":ocp_diag_ssd_osv_core_storage_lib",
+        "@com_google_googletest//:gtest",
+    ],
+)
